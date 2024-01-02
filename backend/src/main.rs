@@ -32,7 +32,7 @@ async fn main() {
 }
 
 async fn index() -> Json<my_dir> {
-    let arr = serial_killer("/benja/Code/C++");
+    let arr = serial_killer("/benja/Code/web/file_viewer/frontend/");
     Json(arr)
 }
 
@@ -40,7 +40,6 @@ fn get_dirs(s: &str) -> Vec<String> {
     let home_dir = env::var("HOME").expect("HOME environment variable not set");
     let dir_path = format!("{}{}", home_dir, s);
     let dir = Path::new(&dir_path);
-
     let mut arr: Vec<String> = Vec::new();
     for entry in dir.read_dir().expect("Couldn't read dir") {
         match entry {
@@ -58,7 +57,6 @@ fn files(s: &str) -> Vec<String> {
     let home_dir = env::var("HOME").expect("HOME environment variable not set");
     let dir_path = format!("{}{}", home_dir, s);
     let dir = Path::new(&dir_path);
-
     let mut arr: Vec<String> = Vec::new();
     for entry in dir.read_dir().expect("Couldn't read dir") {
         match entry {
