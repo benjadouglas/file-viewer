@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_dir","index","main","serial_killer"],"struct":["directory","my_file"]};

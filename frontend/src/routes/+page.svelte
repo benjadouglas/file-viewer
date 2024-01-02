@@ -1,36 +1,48 @@
 <script>
-    import { onMount } from 'svelte';
+import { onMount } from 'svelte';
 
-    let data = '';
+	let data = {};
+	let path = '';
+	let filenames = [];
 
-    onMount(async () => {
-        try {
-            const response = await fetch("http://localhost:8080/");
-            if (response.ok) {
-                data = await response.text();
-            } else {
-                console.error('Server responded with an error:', response.status);
-            }
-        } catch (error) {
-            console.error('There was a problem fetching data:', error);
-        }
-    });
+	onMount(async () => {
+		try {
+			const response = await fetch('http://localhost:8080/');
+			if (response.ok) {
+				data = await response.json();
+				path = data.path;
+				filenames = data.files;
+			} else {
+				console.error('Server responded with an error:', response.status);
+			}
+		} catch (error) {
+			console.error('There was a problem fetching data:', error);
+		}
+	});
 </script>
 
+<main>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+	<h3>{path}</h3>
+	<br />
+	{#each filenames as item}
+		<p><a target="_self">{item.name}</a></p>
+	{/each}
+</main>
+
 <style>
-	h1 {
-		font-family: 'Poppins', sans-serif;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
+	main{
+		font-family: 'Roboto', sans-serif;
 	}
-	p {
-		font-family: 'Poppins', sans-serif;
-		/* align items on the left */
-		text-align: left;
+	a:hover {
+	  color: red;
+	  background-color: transparent;
+	  text-decoration: underline;
+	  cursor: pointer;
+	}
+	a:link {
+	  color: blue;
+	  background-color: transparent;
+	  text-decoration: none;
 	}
 </style>
-<main>
-    <h1>Welcome to your home dir</h1>
-    <p>{data}</p>
-</main>

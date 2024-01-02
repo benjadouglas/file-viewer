@@ -52,10 +52,12 @@ declare module '$env/static/private' {
 	export const LS_COLORS: string;
 	export const COMMAND_MODE: string;
 	export const npm_config_globalconfig: string;
+	export const FIG_TERM_TMUX: string;
 	export const SSH_AUTH_SOCK: string;
 	export const __CF_USER_TEXT_ENCODING: string;
 	export const npm_execpath: string;
 	export const PAGER: string;
+	export const TMUX: string;
 	export const LSCOLORS: string;
 	export const PATH: string;
 	export const npm_package_json: string;
@@ -77,6 +79,7 @@ declare module '$env/static/private' {
 	export const ITERM_PROFILE: string;
 	export const NVIM_LOG_FILE: string;
 	export const npm_config_npm_version: string;
+	export const TMUX_PANE: string;
 	export const XPC_FLAGS: string;
 	export const NIX_SSL_CERT_FILE: string;
 	export const npm_config_node_gyp: string;
@@ -166,10 +169,12 @@ declare module '$env/dynamic/private' {
 		LS_COLORS: string;
 		COMMAND_MODE: string;
 		npm_config_globalconfig: string;
+		FIG_TERM_TMUX: string;
 		SSH_AUTH_SOCK: string;
 		__CF_USER_TEXT_ENCODING: string;
 		npm_execpath: string;
 		PAGER: string;
+		TMUX: string;
 		LSCOLORS: string;
 		PATH: string;
 		npm_package_json: string;
@@ -191,6 +196,7 @@ declare module '$env/dynamic/private' {
 		ITERM_PROFILE: string;
 		NVIM_LOG_FILE: string;
 		npm_config_npm_version: string;
+		TMUX_PANE: string;
 		XPC_FLAGS: string;
 		NIX_SSL_CERT_FILE: string;
 		npm_config_node_gyp: string;
