@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
-	import * as HoverCard from '$lib/components/ui/hover-card';
-	import * as Table from '$lib/components/ui/table';
+	// import * as HoverCard from '$lib/components/ui/hover-card';
+	import * as Table from "$lib/components/ui/table";
 	let data = {};
 	let path = '';
 	let filenames = [];
@@ -60,42 +60,52 @@
 
 <main>
 	<div>
-		<link
-			href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap"
-			rel="stylesheet"
-		/>
-		<h2>
-			<button
-				class="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0"
-				on:click={handleClickBack}
-			>
-				{path}
-			</button>
-		</h2>
-		<br />
-		{#each filenames as item}
-			<p>
-				<button
-					class="rounded-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-black"
-					on:click={handleClick}
-					value={item.name}
-				>
-					{item.name}
-				</button>
-			</p>
-		{/each}
+	<h4 
+		class="scroll-m-20 text-xl font-semibold tracking-tight"
+		>
+		<button
+		on:click={handleClickBack}
+		>
+			{path}
+		</button>
+	</h4>
+	<Table.Root>
+		<Table.Caption>
+			File Explorer
+		</Table.Caption>
+		<Table.Header>
+			<Table.Row>
+				<Table.Head class="w-[100px]">name</Table.Head>
+			</Table.Row>
+		</Table.Header>	
+		<Table.Body>
+			{#each filenames as filename}
+				<Table.Row>
+					<Table.Cell >
+						<button
+						on:click={handleClick}
+						value="{filename.name}"
+						>
+							{filename.name}
+						</button>
+					</Table.Cell>
+				</Table.Row>
+			{/each}
+		</Table.Body>
+	</Table.Root>
+
 	</div>
 </main>
 
 <style>
-	main {
-		font-family: 'Roboto', sans-serif;
-	}
+	/* main { */
+	/* 	font-family: 'Roboto', sans-serif; */
+	/* } */
 	div {
-		background-color: #1a1a1a;
+		/* background-color: #1a1a1a; */
 		border-radius: 20px;
 		padding: 20px;
-		color: white;
+		color: black;
 		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 		width: 95vw;
 		margin: 20px;

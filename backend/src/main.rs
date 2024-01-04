@@ -1,16 +1,24 @@
 #[allow(unused)]
+use std::{
+    env, 
+    net::SocketAddr, 
+    path::Path
+};
 use axum::{routing::get, Router, response::Json, extract::Query};
-use std::env;
-use std::net::SocketAddr;
-use std::path::Path;
 use tower_http::cors::CorsLayer;
 use serde::{Deserialize, Serialize};
-use serde_json::to_string;
+// use serde_json::to_string;
 
 
 #[derive(Debug, Deserialize)]
 struct req_handler{
     file: Option<String>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct my_file_type {
+    name: String,
+    ftype: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -26,6 +34,7 @@ pub struct my_dir{
 
 #[tokio::main]
 async fn main() {
+    // filesV2("/benja/Code/web/file_viewer/backend/src");//32768
     let app = Router::new()
         .route("/", get(index))
         //allow frontend to fetch data
@@ -44,6 +53,15 @@ async fn index(Query(params): Query<req_handler>) -> Json<my_dir> {
     Json(arr)
 }
 
+fn serial_killer(s: &str) -> my_dir{
+    let _files = files(s);
+    let mut  arr: Vec<my_file> = Vec::new();
+    for  file in _files.iter() {
+        arr.push(my_file{name: file.to_string()});
+    }
+    let obj = my_dir{path: s.to_string(), files: arr};
+    return obj
+}
 
 fn get_dirs(s: &str) -> Vec<String> {
     let home_dir = env::var("HOME").expect("HOME environment variable not set");
@@ -65,13 +83,13 @@ fn get_dirs(s: &str) -> Vec<String> {
 fn files(s: &str) -> Vec<String> {
     let home_dir = env::var("HOME").expect("HOME environment variable not set");
     let dir_path = format!("{}{}", home_dir, s);
-    println!("{}", dir_path);
     let dir = Path::new(&dir_path);
     let mut arr: Vec<String> = Vec::new();
     for entry in dir.read_dir().expect("Couldn't read dir") {
         match entry {
             Ok(entry) => {
                 let path = entry.file_name();
+                let ftype = entry.file_type();
                 arr.push(path.to_str().unwrap().to_string());
             }
             Err(e) => println!("Error reading directory: {}", e),
@@ -80,12 +98,22 @@ fn files(s: &str) -> Vec<String> {
     return arr;
 }
 
-fn serial_killer(s: &str) -> my_dir{
-    let _files = files(s);
-    let mut  arr: Vec<my_file> = Vec::new();
-    for  file in _files.iter() {
-        arr.push(my_file{name: file.to_string()});
+fn filesV2(s:&str) {
+    let home_dir = env::var("HOME").expect("HOME environment variable not set");
+    let dir_path = format!("{}{}",home_dir,s);
+    // println!("{}",dir_path);
+    let dir = Path::new(&dir_path);
+    for entry in dir.read_dir().expect("Couldn't read dir") {
+        match(entry){
+            Ok(entry) => {
+                if let Ok(file_type) = entry.file_type(){
+                    println!("type:{:?} | file:{}",file_type,entry.file_name().to_str().unwrap());
+                }else{
+                    println!("type:Unknown| file:{}",entry.file_name().to_str().unwrap())
+                }
+            }
+            Err(e) => println!("Error reading directory: {}", e),
+        }
     }
-    let obj = my_dir{path: s.to_string(), files: arr};
-    return obj
+
 }
