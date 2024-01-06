@@ -5,9 +5,11 @@
 	import * as ContextMenu from '$lib/components/ui/context-menu';
 	import ContextMenuItem from '$lib/components/ui/context-menu/context-menu-item.svelte';
 	import DiTerminalBadge from 'svelte-icons/di/DiTerminalBadge.svelte';
+
 	let data = {};
 	let path = '';
 	let filenames = [];
+
 	onMount(async () => {
 		try {
 			const response = await fetch('http://localhost:8080/');
@@ -15,6 +17,7 @@
 				data = await response.json();
 				path = data.path;
 				filenames = data.files;
+				// console.log(data);
 			} else {
 				console.error('Server responded with an error:', response.status);
 			}
@@ -25,6 +28,7 @@
 
 	async function handleClick(e) {
 		try {
+			// console.log(`fetching at 8080 with data.path:${data.path}; e.value:${e.target.value}`)
 			const response = await fetch(`http://localhost:8080/?file=${data.path}/${e.target.value}`);
 			if (response.ok) {
 				data = await response.json();
@@ -52,7 +56,15 @@
 			console.error('There was a problem fetching data:', error);
 		}
 	}
+	
+	async function handleOpenTerminal(e){
+		try {
+			await fetch(`http://localhost:8080/open/terminal?file=${data.path}/${e.target.value}`);
+		} catch (error) {
+			console.error('There was a problem opening file:', error);
+		}
 
+	}
 	function removelastsegment(path) {
 		const lastslashindex = path.lastIndexOf('/');
 		if (lastslashindex === -1) return path; // no '/' found in the string
@@ -92,7 +104,7 @@
 								</ContextMenu.Trigger>
 								<ContextMenu.Content>
 									<ContextMenu.Item>
-										<button> Terminal </button>
+									<button on:click={handleOpenTerminal} value={item.name}> Terminal </button>
 										<ContextMenu.Shortcut></ContextMenu.Shortcut>
 									</ContextMenu.Item>
 								</ContextMenu.Content>
