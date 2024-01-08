@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	// import * as HoverCard from '$lib/components/ui/hover-card';
-	import * as Table from '$lib/components/ui/table';
 	import * as ContextMenu from '$lib/components/ui/context-menu';
-	import ContextMenuItem from '$lib/components/ui/context-menu/context-menu-item.svelte';
-	import DiTerminalBadge from 'svelte-icons/di/DiTerminalBadge.svelte';
+  	import * as Table from "$lib/components/ui/table";
+
 	let data = {};
 	let path = '';
 	let filenames = [];
+
 	onMount(async () => {
 		try {
 			const response = await fetch('http://localhost:8080/');
@@ -15,6 +14,7 @@
 				data = await response.json();
 				path = data.path;
 				filenames = data.files;
+				// console.log(data);
 			} else {
 				console.error('Server responded with an error:', response.status);
 			}
@@ -25,6 +25,7 @@
 
 	async function handleClick(e) {
 		try {
+			// console.log(`fetching at 8080 with data.path:${data.path}; e.value:${e.target.value}`)
 			const response = await fetch(`http://localhost:8080/?file=${data.path}/${e.target.value}`);
 			if (response.ok) {
 				data = await response.json();
@@ -50,6 +51,14 @@
 			}
 		} catch (error) {
 			console.error('There was a problem fetching data:', error);
+		}
+	}
+
+	async function handleOpenTerminal(e) {
+		try {
+			await fetch(`http://localhost:8080/open/terminal?file=${data.path}/${e.target.value}`);
+		} catch (error) {
+			console.error('There was a problem opening file:', error);
 		}
 	}
 
@@ -112,12 +121,13 @@
 		height: 20px;
 	}
 	div {
-		/* background-color: #1a1a1a; */
+		background-color: #FFFFFF;
 		border-radius: 20px;
 		padding: 20px;
 		color: black;
 		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 		width: 50vw;
 		margin: 20px;
+		
 	}
 </style>
