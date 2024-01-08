@@ -7,6 +7,7 @@ import Filesys from "$lib/main/filesys.svelte";
 <style>
 	Filesys{
 		width: 50vw;
+		background-color: #303030;
 		margin: 20px;
 	}
 </style>

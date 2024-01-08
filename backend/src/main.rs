@@ -80,9 +80,7 @@ fn files(s: &str) -> Vec<String> {
 
 fn filesV2(s: &str) -> Vec<(String, String)> {
     let home_dir = env::var("HOME").expect("HOME environment variable not set");
-    println!("in filesV2 home_dir={}", home_dir);
     let dir_path = format!("{}/{}", home_dir, s);
-    println!("in filesV2 dir_path={}", dir_path);
     let dir = Path::new(&dir_path);
     let mut arr: Vec<(String, String)> = Vec::new();
     for entry in dir.read_dir().expect("Couldn't read dir") {
